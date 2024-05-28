@@ -1,0 +1,74 @@
+:root {
+    --primary-color: #0078d4;
+    --hover-color: #0056a3;
+    --background-color: #f5f5f5;
+    --text-color: #333;
+    --border-color: #ddd;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.title, .subtitle {
+    color: var(--primary-color);
+}
+
+.section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.button-group, .filter-options, .concurrency-setting, .action-buttons {
+    margin-bottom: 20px;
+}
+
+button {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--hover-color);
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+}
+
+input[type="number"] {
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 200px;
+}
+
+.output {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

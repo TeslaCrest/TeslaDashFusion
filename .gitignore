@@ -1,0 +1,8 @@
+generated/
+videos/
+*.mp4
+node_modules/
+package-lock.json
+*.txt
+dist/
+*.key

@@ -1,0 +1,56 @@
+{
+  "name": "TeslaDashFusion",
+  "version": "1.0.1",
+  "description": "Small node app to merge Tesla Dashcam videos into a single file",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist-win": "electron-builder -w",
+    "dist-mac": "electron-builder -m",
+    "dist-lin": "electron-builder -l"
+  },
+  "build": {
+    "appId": "io.cyberbison.tesladashfusion",
+    "productName": "TeslaDashFusion",
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
+    "files": [
+      "**/*",
+      "!**/*.mp4",
+      "!**/*.ts",
+      "!*.code-workspace",
+      "!LICENSE.md",
+      "!package.json",
+      "!package-lock.json",
+      "!src/",
+      "!tsconfig.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.utilities"
+    }
+  },
+  "keywords": [],
+  "author": "TeslaCrest",
+  "license": "MIT",
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "p-limit": "^5.0.0",
+    "tree-kill": "^1.2.2"
+  },
+  "devDependencies": {
+    "electron": "^29.1.6",
+    "electron-builder": "^24.13.3"
+  }
+}

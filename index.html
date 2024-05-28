@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>TeslaDashFusion</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">TeslaDashFusion</h1>
+
+        <div class="section">
+            <h2 class="subtitle">Choose your parameters</h2>
+            <div class="button-group">
+                <button id="choose-folder">Choose source folder</button>
+                <div id="selected-folder"></div>
+                
+                <button id="choose-folder-export">Choose destination folder</button>
+                <div id="selected-folder-export"></div>
+            </div>
+
+            <div class="filter-options">
+                <label for="concurrencyLimit"><b>Chose at least one layout:</b></label>
+
+                <label><input type="checkbox" class="filter-option" value="1" checked/> Layout 1 (2x2)</label>
+                <label><input type="checkbox" class="filter-option" value="2" /> Layout 2 (Front big)</label>
+                <label><input type="checkbox" class="filter-option" value="3" /> Layout 3 (Back big)</label>
+                <label><input type="checkbox" class="filter-option" value="4" /> Layout 4 (Left big)</label>
+                <label><input type="checkbox" class="filter-option" value="5" /> Layout 5 (Right big)</label>
+            </div>
+
+            <div class="concurrency-setting">
+                <label for="concurrencyLimit"><b>Number of folder to process at the same time:</b></label>
+                <input type="number" id="concurrencyLimit" name="concurrencyLimit" value="2" min="1" /><br /><br />
+                <i>Processing the videos is high-consuming for the CPU. The higher this number is, the longer it'll take to process one folder. Adjust regarding your config. (Recommended 2 for an 8-core CPU @ 3.0GHz)</i>
+            </div>
+
+            <div class="action-buttons">
+                <button id="launch">Launch</button>
+                <button id="stop">Stop</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="subtitle">Console</h2>
+            <div id="script-output" class="output"></div>
+        </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+</body>
+</html>
