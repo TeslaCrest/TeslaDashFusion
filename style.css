@@ -4,10 +4,11 @@
     --background-color: #f5f5f5;
     --text-color: #333;
     --border-color: #ddd;
+    --font-primary: 'Roboto', sans-serif; /* Example of a modern font */
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-primary);
     margin: 0;
     padding: 20px;
     background-color: var(--background-color);
@@ -37,17 +38,18 @@ body {
 
 button {
     margin: 10px 0;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     background-color: var(--primary-color);
     color: white;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
     background-color: var(--hover-color);
+    transform: translateY(-2px); /* Add a subtle lift effect on hover */
 }
 
 label {
