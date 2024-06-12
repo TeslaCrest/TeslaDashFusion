@@ -62,6 +62,7 @@ class VideoCombiner extends EventEmitter {
     this.logFilePath = ""
     this.concatenedDir = ""
     this.selectedFilter = ""
+    this.trimduration = ""
   }
   // Log method for writing messages to the log file
   log(message) {
@@ -119,7 +120,10 @@ class VideoCombiner extends EventEmitter {
       return fileNameA.localeCompare(fileNameB)
     })
     return new Promise((resolve, reject) => {
-      const fileListPath = path.join(this.concatenedDir, this.generateFilename())
+      const fileListPath = path.join(
+        this.concatenedDir,
+        this.generateFilename()
+      )
       const fileListContent = videoPaths
         .map((file) => `file '${file}'`)
         .join("\n")
@@ -161,10 +165,7 @@ class VideoCombiner extends EventEmitter {
 
   async checkProcessedMarker(subfolder, filterNumber) {
     this.checkCancellation()
-    const markerFilePath = path.join(
-      subfolder,
-      ".processed_" + filterNumber
-    )
+    const markerFilePath = path.join(subfolder, ".processed_" + filterNumber)
     try {
       await fs.promises.access(markerFilePath)
       return true // File exists
@@ -182,7 +183,6 @@ class VideoCombiner extends EventEmitter {
     // Filter out non-.mp4 files
     files = files.filter((file) => path.extname(file).toLowerCase() === ".mp4")
 
-
     if (files.length < 4) {
       this.emit(
         "message",
@@ -190,7 +190,7 @@ class VideoCombiner extends EventEmitter {
       )
       this.log(`Not enough videos found in ${subfolder}\n`)
     } else {
-      // Organize files by timestamp
+      // Assume files is an array of file names, and subfolder is the path to the folder containing these files.
       let filesByTimestamp = files.reduce((acc, file) => {
         const dateTimeCamera = file.split("-").slice(0, -1).join("-") // Assuming format "YYYY-MM-DD_HH-MM-SS-camera_id"
         if (!acc[dateTimeCamera]) acc[dateTimeCamera] = []
@@ -198,6 +198,35 @@ class VideoCombiner extends EventEmitter {
         return acc
       }, {})
 
+      console.log("Trim duration: ", this.trimduration)
+      
+      function getLastXEntries(obj, x) {
+        // Extract keys (timestamps) from the object
+        const keys = Object.keys(obj);
+    
+        // Sort keys in chronological order
+        keys.sort();
+    
+        // Select the last X keys
+        const lastXKeys = keys.slice(-x);
+    
+        // Construct a new object with only the selected keys
+        const result = {};
+        lastXKeys.forEach(key => {
+            result[key] = obj[key];
+        });
+    
+        return result;
+    }
+    
+
+
+      if (this.trimduration != 0) {
+        const numberOfFilesToSelect = parseInt(this.trimduration) + 1 // Adding one extra minute as sometimes, last file is only a few seconds long
+
+        filesByTimestamp = getLastXEntries(filesByTimestamp, numberOfFilesToSelect)
+
+      }
 
       let combinedVideosPathstwoxtwo = []
       let combinedVideosPathsfrontbig = []
@@ -205,20 +234,38 @@ class VideoCombiner extends EventEmitter {
       let combinedVideosPathsleftbig = []
       let combinedVideosPathsrightbig = []
 
-      const isProcessedtwoxtwo = await this.checkProcessedMarker(subfolder, "2x2")
-      const isProcessedfrontbig = await this.checkProcessedMarker(subfolder, "frontbig")
-      const isProcessedbackbig = await this.checkProcessedMarker(subfolder, "backbig")
-      const isProcessedleftbig = await this.checkProcessedMarker(subfolder, "leftbig")
-      const isProcessedrightbig = await this.checkProcessedMarker(subfolder, "rightbig")
+      const isProcessedtwoxtwo = await this.checkProcessedMarker(
+        subfolder,
+        "2x2"
+      )
+      const isProcessedfrontbig = await this.checkProcessedMarker(
+        subfolder,
+        "frontbig"
+      )
+      const isProcessedbackbig = await this.checkProcessedMarker(
+        subfolder,
+        "backbig"
+      )
+      const isProcessedleftbig = await this.checkProcessedMarker(
+        subfolder,
+        "leftbig"
+      )
+      const isProcessedrightbig = await this.checkProcessedMarker(
+        subfolder,
+        "rightbig"
+      )
       // Method to dynamically check each filter based on this.selectedFilter
 
       const filterNumbers = this.selectedFilter.split(",")
 
-      const filterNames = ["2x2", "frontbig", "backbig", "leftbig", "rightbig"];
+      const filterNames = ["2x2", "frontbig", "backbig", "leftbig", "rightbig"]
 
       let allFiltersProcessed = true
       for (const number of filterNumbers) {
-        if ((await this.checkProcessedMarker(subfolder, filterNames[number])) === false) {
+        if (
+          (await this.checkProcessedMarker(subfolder, filterNames[number])) ===
+          false
+        ) {
           // If any filter is not processed, return false
           allFiltersProcessed = false
           break
@@ -340,10 +387,7 @@ class VideoCombiner extends EventEmitter {
             )
           }
         }
-        const outputPathDir = path.join(
-          this.concatenedDir,
-          `/${path.basename(subfolder)}/`
-        )
+        const outputPathDir = path.join(this.concatenedDir)
 
         console.log(outputPathDir)
         await fs.promises.mkdir(outputPathDir, { recursive: true })
@@ -479,8 +523,6 @@ class VideoCombiner extends EventEmitter {
       if (leftVideo) command.addInput(leftVideo)
       if (rightVideo) command.addInput(rightVideo)
 
-
-
       const self = this
       command
         .complexFilter(filter)
@@ -540,7 +582,8 @@ class VideoCombiner extends EventEmitter {
     folderPaths,
     folderExportPath,
     selectedFilter,
-    concurrencyLimit
+    concurrencyLimit,
+    trimduration
   ) {
     this.isCancelled = false // Ensure flag is reset at start
 
@@ -548,6 +591,7 @@ class VideoCombiner extends EventEmitter {
     this.videosDirs = folderPaths // The first argument is the directory path
     this.concatenedDir = path.resolve(folderExportPath)
     this.selectedFilter = selectedFilter
+    this.trimduration = trimduration
 
     const timestamp = this.getFormattedTimestamp()
     this.combinedDir = path.resolve(
@@ -581,7 +625,9 @@ class VideoCombiner extends EventEmitter {
     try {
       // const subfolders = await this.listSubfolders(this.videosDir)
       const promises = this.videosDirs.map((subfolder) => {
-        return limit(() => this.processVideosInSubfolder(path.resolve(subfolder))) // Apply the limit to each subfolder processing
+        return limit(() =>
+          this.processVideosInSubfolder(path.resolve(subfolder))
+        ) // Apply the limit to each subfolder processing
       })
 
       // Wait for all limited tasks to complete

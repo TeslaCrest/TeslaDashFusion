@@ -42,6 +42,8 @@ document.getElementById("launch").addEventListener("click", () => {
   const selectedFilters = Array.from(
     document.querySelectorAll(".filter-option:checked")
   ).map((checkbox) => checkbox.value)
+  // Get the duration trim
+  const trimduration = document.getElementById("trimduration").value
   // Get the concurrency limit
   const concurrencyLimit = document.getElementById("concurrencyLimit").value
 
@@ -81,7 +83,8 @@ document.getElementById("launch").addEventListener("click", () => {
     selectedFolderPath,
     selectedFolderPathExport,
     selectedFilters.join(","),
-    concurrencyLimit
+    concurrencyLimit,
+    trimduration
   )
 })
 

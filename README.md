@@ -68,6 +68,7 @@ TeslaDashFusion is not affiliated with Tesla, Inc. It is an independent software
 
 Here's a short list of upcoming features or features that would be nice to have:
 
+- Chose desired duration of exported video (trim the 2, 3 or 5 final minutes of original footage)
 - Example of layouts to help user chose the right layout
 - Overall GUI improvement
 - Showing a global progression instead of the console output, by example: "Processing subfolder 5 of 150"

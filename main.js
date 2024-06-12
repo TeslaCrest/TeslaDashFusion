@@ -49,7 +49,8 @@ ipcMain.on(
     folderPath,
     folderExportPath,
     selectedFilter,
-    concurrencyLimit
+    concurrencyLimit,
+    trimduration
   ) => {
     combiner = new VideoCombiner()
 
@@ -63,7 +64,8 @@ ipcMain.on(
         folderPath,
         folderExportPath,
         selectedFilter,
-        concurrencyLimit
+        concurrencyLimit,
+        trimduration
       )
       event.sender.send("script-output", "Process completed successfully")
     } catch (error) {
