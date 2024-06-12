@@ -57,7 +57,7 @@ class VideoCombiner extends EventEmitter {
 
     this.ffmpeg.setFfmpegPath(ffmpegPath)
     this.isCancelled = false // Flag to track cancellation
-    this.videosDir = "" // The first argument is the directory path
+    this.videosDirs = "" // The first argument is the directory path
     this.combinedDir = ""
     this.logFilePath = ""
     this.concatenedDir = ""
@@ -88,7 +88,7 @@ class VideoCombiner extends EventEmitter {
     this.emptyDirectory(this.combinedDir)
     this.emit(
       "message",
-      "Treatment operation cancelled. Processing will stop after the current subfolder is completed."
+      "Treatment operation cancelled. Processing will stop after the current folder is completed."
     )
     this.log("Operation cancelled")
     this.closeLog()
@@ -175,8 +175,8 @@ class VideoCombiner extends EventEmitter {
 
   async processVideosInSubfolder(subfolder) {
     this.checkCancellation()
-    this.emit("message", `Starting processing for subfolder: ${subfolder}`)
-    this.log(`Starting processing for subfolder: ${subfolder}`)
+    this.emit("message", `Starting processing for folder: ${subfolder}`)
+    this.log(`Starting processing for folder: ${subfolder}`)
     let files = await fs.promises.readdir(subfolder)
 
     // Filter out non-.mp4 files
@@ -232,7 +232,7 @@ class VideoCombiner extends EventEmitter {
         )
         this.emit(
           "message",
-          "Subfolder " +
+          "Folder " +
             subfolder +
             " has already been processed for all selected filters. Skipping."
         )
@@ -457,8 +457,8 @@ class VideoCombiner extends EventEmitter {
           )
         }
 
-        this.emit("message", `Finished processing subfolder: ${subfolder}\n`)
-        this.log(`Finished processing subfolder: ${subfolder}\n`)
+        this.emit("message", `Finished processing folder: ${subfolder}\n`)
+        this.log(`Finished processing folder: ${subfolder}\n`)
       }
     }
   }
@@ -537,7 +537,7 @@ class VideoCombiner extends EventEmitter {
   }
 
   async mainFunction(
-    folderPath,
+    folderPaths,
     folderExportPath,
     selectedFilter,
     concurrencyLimit
@@ -545,7 +545,7 @@ class VideoCombiner extends EventEmitter {
     this.isCancelled = false // Ensure flag is reset at start
 
     // Command line arguments
-    this.videosDir = path.resolve(folderPath) // The first argument is the directory path
+    this.videosDirs = folderPaths // The first argument is the directory path
     this.concatenedDir = path.resolve(folderExportPath)
     this.selectedFilter = selectedFilter
 
@@ -579,15 +579,15 @@ class VideoCombiner extends EventEmitter {
     const pLimit = (await import("p-limit")).default
     const limit = pLimit(Number(concurrencyLimit)) // Concurrency limit
     try {
-      const subfolders = await this.listSubfolders(this.videosDir)
-      const promises = subfolders.map((subfolder) => {
-        return limit(() => this.processVideosInSubfolder(subfolder)) // Apply the limit to each subfolder processing
+      // const subfolders = await this.listSubfolders(this.videosDir)
+      const promises = this.videosDirs.map((subfolder) => {
+        return limit(() => this.processVideosInSubfolder(path.resolve(subfolder))) // Apply the limit to each subfolder processing
       })
 
       // Wait for all limited tasks to complete
       await Promise.all(promises)
-      this.emit("message", "All subfolders processed successfully.")
-      this.log("All subfolders processed successfully.")
+      this.emit("message", "All folders processed successfully.")
+      this.log("All folders processed successfully.")
       this.closeLog()
     } catch (err) {
       console.error("An error occurred during processing:", err)

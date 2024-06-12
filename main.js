@@ -30,7 +30,14 @@ app.on("before-quit", () => {
   }
 })
 
-ipcMain.handle("open-folder-dialog", async () => {
+ipcMain.handle('open-folder-dialog', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory', 'multiSelections']
+  })
+  return result.filePaths
+})
+
+ipcMain.handle("open-folder-dialog-export", async () => {
   const result = await dialog.showOpenDialog({ properties: ["openDirectory"] })
   return result.filePaths[0] // Return the selected directory path
 })

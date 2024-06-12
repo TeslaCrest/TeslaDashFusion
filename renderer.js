@@ -10,13 +10,14 @@ ipcRenderer.on("message", (event, message) => {
 // Assuming you have stored the selected folder path in a variable
 let selectedFolderPath = ""
 
-document.getElementById("choose-folder").addEventListener("click", async () => {
-  const path = await ipcRenderer.invoke("open-folder-dialog")
-  document.getElementById(
-    "selected-folder"
-  ).innerText = `Selected Folder: ${path}`
-  selectedFolderPath = path
-})
+document
+  .getElementById("choose-folder")
+  .addEventListener("click", async () => {
+    const paths = await ipcRenderer.invoke("open-folder-dialog")
+    document.getElementById("selected-folder").innerText = 
+      `Selected Folders:\n ${paths.join('\n')}`
+    selectedFolderPath = paths
+  })
 
 // Assuming you have stored the selected folder path in a variable
 let selectedFolderPathExport = ""
@@ -24,7 +25,7 @@ let selectedFolderPathExport = ""
 document
   .getElementById("choose-folder-export")
   .addEventListener("click", async () => {
-    const path = await ipcRenderer.invoke("open-folder-dialog")
+    const path = await ipcRenderer.invoke("open-folder-dialog-export")
     document.getElementById(
       "selected-folder-export"
     ).innerText = `Selected Folder: ${path}`
