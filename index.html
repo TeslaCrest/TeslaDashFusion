@@ -22,7 +22,7 @@
             </div>
 
             <div class="filter-options">
-                <label for="concurrencyLimit"><b>Chose at least one layout:</b></label>
+                <label><b>Chose at least one layout:</b></label>
 
                 <label><input type="checkbox" class="filter-option" value="1" checked/> Layout 1 (2x2)</label>
                 <label><input type="checkbox" class="filter-option" value="2" /> Layout 2 (Front big)</label>
@@ -31,10 +31,16 @@
                 <label><input type="checkbox" class="filter-option" value="5" /> Layout 5 (Right big)</label>
             </div>
 
+            <div class="trimduration-setting">
+                <label for="trimduration"><b>Video duration (in minutes):</b></label>
+                <input type="number" id="trimduration" name="trimduration" value="3" min="0" /><br /><br />
+                <i>TeslaCam records lengthy videos, often with the crucial event near the end. Trimming to keep only the end of the video can speed up processing; set to 0 to process the full video.</i>
+            </div>
+
             <div class="concurrency-setting">
                 <label for="concurrencyLimit"><b>Number of folder to process at the same time:</b></label>
                 <input type="number" id="concurrencyLimit" name="concurrencyLimit" value="2" min="1" /><br /><br />
-                <i>Processing the videos is high-consuming for the CPU. The higher this number is, the longer it'll take to process one folder. Adjust regarding your config. (Recommended 2 for an 8-core CPU @ 3.0GHz)</i>
+                <i>Video processing is CPU-intensive. Higher concurrency means longer processing times per folder. Adjust based on your system specs. (Recommended: 2 for an 8-core CPU @ 3.0GHz)</i>
             </div>
 
             <div class="action-buttons">

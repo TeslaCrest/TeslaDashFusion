@@ -1,6 +1,6 @@
 {
   "name": "TeslaDashFusion",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Small node app to merge Tesla Dashcam videos into a single file",
   "main": "main.js",
   "scripts": {
