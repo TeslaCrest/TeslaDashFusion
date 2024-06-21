@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1 class="title">TeslaDashFusion</h1>
+    </header>
 
-        <div class="section">
+    <main>
+        <section class="choose-parameters">
             <h2 class="subtitle">Choose your parameters</h2>
             <div class="button-group">
                 <button id="choose-folder">Choose source folder</button>
@@ -22,14 +24,29 @@
             </div>
 
             <div class="filter-options">
-                <label><b>Chose at least one layout:</b></label>
-
-                <label><input type="checkbox" class="filter-option" value="1" checked/> Layout 1 (2x2)</label>
-                <label><input type="checkbox" class="filter-option" value="2" /> Layout 2 (Front big)</label>
-                <label><input type="checkbox" class="filter-option" value="3" /> Layout 3 (Back big)</label>
-                <label><input type="checkbox" class="filter-option" value="4" /> Layout 4 (Left big)</label>
-                <label><input type="checkbox" class="filter-option" value="5" /> Layout 5 (Right big)</label>
+                <label><b>Choose at least one layout:</b></label>
+                <label>
+                    <input type="checkbox" class="filter-option" value="1" checked/>
+                    <img src="assets/2x2-layout.png" alt="Layout 1 (2x2)">
+                </label>
+                <label>
+                    <input type="checkbox" class="filter-option" value="2"/>
+                    <img src="assets/FrontBig-layout.png" alt="Layout 2 (Front big)">
+                </label>
+                <label>
+                    <input type="checkbox" class="filter-option" value="3"/>
+                    <img src="assets/BackBig-layout.png" alt="Layout 3 (Back big)">
+                </label>
+                <label>
+                    <input type="checkbox" class="filter-option" value="4"/>
+                    <img src="assets/LeftBig-layout.png" alt="Layout 4 (Left big)">
+                </label>
+                <label>
+                    <input type="checkbox" class="filter-option" value="5"/>
+                    <img src="assets/RightBig-layout.png" alt="Layout 5 (Right big)">
+                </label>
             </div>
+            
 
             <div class="trimduration-setting">
                 <label for="trimduration"><b>Video duration (in minutes):</b></label>
@@ -47,13 +64,13 @@
                 <button id="launch">Launch</button>
                 <button id="stop">Stop</button>
             </div>
-        </div>
+        </section>
 
-        <div class="section">
+        <section class="console">
             <h2 class="subtitle">Console</h2>
             <div id="script-output" class="output"></div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="./renderer.js"></script>
 </body>
