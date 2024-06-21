@@ -68,8 +68,6 @@ TeslaDashFusion is not affiliated with Tesla, Inc. It is an independent software
 
 Here's a short list of upcoming features or features that would be nice to have:
 
-- Example of layouts to help user chose the right layout
 - Overall GUI improvement
 - Showing a global progression instead of the console output, by example: "Processing subfolder 5 of 150"
 - Add an option to show the timestamp on the video and other info from `content.json` created by the Tesla dashcam
-- Create a cool app icon
